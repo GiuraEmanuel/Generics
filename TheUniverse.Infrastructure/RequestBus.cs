@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace iQuest.TheUniverse.Infrastructure
 {
-    public class RequestBus<T>
+    public class RequestBus
     {
         private readonly Dictionary<Type, Type> handlers = new Dictionary<Type, Type>();
 
