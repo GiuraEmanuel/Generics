@@ -4,9 +4,9 @@ using iQuest.TheUniverse.Infrastructure;
 
 namespace iQuest.TheUniverse.Application.GetAllStars
 {
-    public class GetAllStarsRequestHandler : IRequestHandler
+    public class GetAllStarsRequestHandler : IRequestHandler<GetAllStarsRequest, List<StarInfo>>
     {
-        public object Execute(object request)
+        public List<StarInfo> Execute(GetAllStarsRequest request)
         {
             List<StarInfo> starsInfo = new List<StarInfo>();
 
@@ -27,7 +27,6 @@ namespace iQuest.TheUniverse.Application.GetAllStars
                     starsInfo.Add(starInfo);
                 }
             }
-
             return starsInfo;
         }
     }

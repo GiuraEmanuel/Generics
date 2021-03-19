@@ -1,7 +1,7 @@
 ﻿namespace iQuest.TheUniverse.Infrastructure
 {
-    public interface IRequestHandler
+    public interface IRequestHandler<TRequest, TResponse>
     {
-        object Execute(object request);
+        TResponse Execute(TRequest request);
     }
 }

@@ -4,9 +4,9 @@ using iQuest.TheUniverse.Infrastructure;
 
 namespace iQuest.TheUniverse.Application.AddGalaxy
 {
-    public class AddGalaxyRequestHandler : IRequestHandler
+    public class AddGalaxyRequestHandler : IRequestHandler<AddGalaxyRequest, bool>
     {
-        public object Execute(object request)
+        public bool Execute(AddGalaxyRequest request)
         {
             if (request == null)
                 throw new ArgumentNullException(nameof(request));
