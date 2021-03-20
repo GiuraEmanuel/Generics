@@ -5,33 +5,30 @@ namespace iQuest.TheUniverse.Infrastructure
 {
     public class RequestBus
     {
-        private readonly Dictionary<Type, Type> handlers = new Dictionary<Type, Type>();
-
-        public void RegisterHandler(Type requestType, Type requestHandlerType)
+        public void RegisterHandler<TRequest, TResponse, THandler>() where THandler : IRequestHandler<TRequest, TResponse>, new()
         {
-            if (!requestHandlerType.ImplementsInterface(typeof(IRequestHandler)))
-                throw new ArgumentException("requestHandlerType must inherit RequestHandlerBase", nameof(requestHandlerType));
+            if (HandlerFactory<TRequest, TResponse>.CreateHandler != null)
+                throw new InvalidOperationException("Request handler for TRequest and TResponse is already registered.");
 
-            if (handlers.ContainsKey(requestType))
-                throw new ArgumentException("requestType is already registered.", nameof(requestType));
-
-            handlers.Add(requestType, requestHandlerType);
+            HandlerFactory<TRequest, TResponse>.CreateHandler = () => new THandler();
         }
 
-        public object Send(object request)
+        public TResponse Send<TRequest,TResponse>(TRequest request)
         {
             if (request == null) throw new ArgumentNullException(nameof(request));
 
-            Type requestType = request.GetType();
 
-            if (!handlers.ContainsKey(requestType))
-                throw new Exception("Request handler not registered for the specified request.");
+            if (HandlerFactory<TRequest, TResponse>.CreateHandler == null)
+                throw new InvalidOperationException("Request handler for the TRequest and TResponse is not registered.");
 
-            Type requestHandlerType = handlers[requestType];
-
-            IRequestHandler requestHandler = (IRequestHandler)Activator.CreateInstance(requestHandlerType);
+            IRequestHandler<TRequest, TResponse> requestHandler = HandlerFactory<TRequest, TResponse>.CreateHandler();
 
             return requestHandler.Execute(request);
+        }
+
+        private static class HandlerFactory<TRequest, TResponse>
+        {
+            public static Func<IRequestHandler<TRequest, TResponse>> CreateHandler { get; set; }
         }
     }
 }

@@ -19,7 +19,7 @@ namespace iQuest.TheUniverse.Presentation.Commands
             {
                 StarDetailsProvider = new StarDetailsProvider()
             };
-            bool success = (bool)requestBus.Send(addStarRequest);
+            bool success = requestBus.Send<AddStarRequest,bool>(addStarRequest);
 
             if (success)
                 DisplaySuccessMessage();

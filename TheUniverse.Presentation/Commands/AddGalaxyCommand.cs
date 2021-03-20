@@ -19,7 +19,7 @@ namespace iQuest.TheUniverse.Presentation.Commands
             {
                 GalaxyDetailsProvider = new GalaxyDetailsProvider()
             };
-            bool success = (bool)requestBus.Send(addGalaxyRequest);
+            bool success = requestBus.Send<AddGalaxyRequest, bool>(addGalaxyRequest);
 
             if (success)
                 DisplaySuccessMessage();
